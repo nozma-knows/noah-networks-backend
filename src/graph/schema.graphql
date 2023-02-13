@@ -1,0 +1,111 @@
+type Login {
+  id: ID!
+  user: User!
+  email: String!
+}
+
+type User {
+  id: ID!
+  firstName: String
+  lastName: String
+  email: String
+  emailVerified: Boolean
+}
+
+type Session {
+  id: ID!
+  token: String!
+}
+
+type Blog {
+  id: ID!
+  createdAt: String!
+  updatedAt: String!
+  authorId: String!
+  author: User!
+  category: String
+  title: String
+  subtitle: String
+  content: [String]
+}
+
+type Project {
+  id: ID!
+  createdAt: String!
+  updatedAt: String!
+  authorId: String!
+  author: User!
+  name: String!
+  website: String
+  github: String
+  category: String
+  title: String
+  content: [String]
+}
+
+input CreateLoginInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  passwordConfirmation: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input LogoutInput {
+  sessionId: String!
+}
+
+input BlogInput {
+  authorId: ID!
+  category: String!
+  title: String!
+  subtitle: String!
+  content: [String]!
+}
+
+input CreateProjectInput {
+  authorId: ID!
+  name: String!
+  website: String
+  github: String
+  category: String
+  title: String
+  content: [String]
+}
+
+input UpdateProjectInput {
+  id: ID!
+  authorId: ID!
+  name: String!
+  website: String
+  github: String
+  category: String
+  title: String
+  content: [String]
+}
+
+type Query {
+  user(id: String!): User
+  users: [User]
+  blog(title: String!): Blog
+  blogs: [Blog]
+  project(name: String!): Project
+  projects: [Project]
+}
+
+type Mutation {
+  createLogin(input: CreateLoginInput!): Login!
+  login(input: LoginInput!): Session!
+  logout(input: LogoutInput!): Session!
+  createBlog(input: BlogInput!): Blog!
+  updateBlog(input: BlogInput!): Blog!
+  deleteBlog(title: String!): Blog!
+  createProject(input: CreateProjectInput!): Project!
+  updateProject(input: UpdateProjectInput!): Project!
+  deleteProject(id: ID!): Project!
+}
