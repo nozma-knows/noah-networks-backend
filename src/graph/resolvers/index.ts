@@ -1,6 +1,9 @@
 import { userQueryResolvers } from "./user.resolvers";
 import { loginMutationResolvers } from "./login.resolvers";
-import { sessionMutationResolvers } from "./session.resolvers";
+import {
+  sessionQueryResolvers,
+  sessionMutationResolvers,
+} from "./session.resolvers";
 import { blogQueryResolvers, blogMutationResolvers } from "./blog.resolvers";
 import {
   projectQueryResolvers,
@@ -9,6 +12,7 @@ import {
 
 export const resolvers: any = {
   Query: {
+    ...sessionQueryResolvers,
     ...userQueryResolvers,
     ...blogQueryResolvers,
     ...projectQueryResolvers,

@@ -66,10 +66,6 @@ export type LoginInput = {
   password: Scalars['String'];
 };
 
-export type LogoutInput = {
-  sessionId: Scalars['String'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   createBlog: Blog;
@@ -114,11 +110,6 @@ export type MutationLoginArgs = {
 };
 
 
-export type MutationLogoutArgs = {
-  input: LogoutInput;
-};
-
-
 export type MutationUpdateBlogArgs = {
   input: BlogInput;
 };
@@ -149,6 +140,7 @@ export type Query = {
   blogs?: Maybe<Array<Maybe<Blog>>>;
   project?: Maybe<Project>;
   projects?: Maybe<Array<Maybe<Project>>>;
+  session?: Maybe<Session>;
   user?: Maybe<User>;
   users?: Maybe<Array<Maybe<User>>>;
 };
@@ -161,6 +153,11 @@ export type QueryBlogArgs = {
 
 export type QueryProjectArgs = {
   name: Scalars['String'];
+};
+
+
+export type QuerySessionArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -272,7 +269,6 @@ export type ResolversTypes = ResolversObject<{
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Login: ResolverTypeWrapper<Login>;
   LoginInput: LoginInput;
-  LogoutInput: LogoutInput;
   Mutation: ResolverTypeWrapper<{}>;
   Project: ResolverTypeWrapper<Project>;
   Query: ResolverTypeWrapper<{}>;
@@ -292,7 +288,6 @@ export type ResolversParentTypes = ResolversObject<{
   ID: Scalars['ID'];
   Login: Login;
   LoginInput: LoginInput;
-  LogoutInput: LogoutInput;
   Mutation: {};
   Project: Project;
   Query: {};
@@ -329,7 +324,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   deleteBlog?: Resolver<ResolversTypes['Blog'], ParentType, ContextType, RequireFields<MutationDeleteBlogArgs, 'title'>>;
   deleteProject?: Resolver<ResolversTypes['Project'], ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'id'>>;
   login?: Resolver<ResolversTypes['Session'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
-  logout?: Resolver<ResolversTypes['Session'], ParentType, ContextType, RequireFields<MutationLogoutArgs, 'input'>>;
+  logout?: Resolver<ResolversTypes['Session'], ParentType, ContextType>;
   updateBlog?: Resolver<ResolversTypes['Blog'], ParentType, ContextType, RequireFields<MutationUpdateBlogArgs, 'input'>>;
   updateProject?: Resolver<ResolversTypes['Project'], ParentType, ContextType, RequireFields<MutationUpdateProjectArgs, 'input'>>;
 }>;
@@ -354,6 +349,7 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   blogs?: Resolver<Maybe<Array<Maybe<ResolversTypes['Blog']>>>, ParentType, ContextType>;
   project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryProjectArgs, 'name'>>;
   projects?: Resolver<Maybe<Array<Maybe<ResolversTypes['Project']>>>, ParentType, ContextType>;
+  session?: Resolver<Maybe<ResolversTypes['Session']>, ParentType, ContextType, RequireFields<QuerySessionArgs, 'id'>>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
 }>;

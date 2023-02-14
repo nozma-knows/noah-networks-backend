@@ -1,16 +1,48 @@
 import {
   SessionResolvers,
   LoginInput,
-  LogoutInput,
+  Session,
+  // LogoutInput,
 } from "./../../__generated__/resolvers-types";
 const { prisma } = require("../../prisma/client");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+export const sessionQueryResolvers: SessionResolvers = {
+  session: (parents: any, args: { id: String }, contextValue: any) => {
+    console.log(
+      "noah - session.resolvers.ts - session - contextValue: ",
+      contextValue
+    );
+    const { id } = args;
+
+    if (!id) {
+      throw new Error("Required parameter is missing.");
+    }
+
+    const session = prisma.session.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!session) {
+      throw new Error("Can't find session.");
+    }
+
+    return session;
+  },
+};
+
 // Mutation Resolvers for managing a users session
 export const sessionMutationResolvers: SessionResolvers = {
   // Login Mutation
-  login: async (parent: any, args: { input: LoginInput }) => {
+  login: async (
+    parent: any,
+    args: { input: LoginInput },
+    contextValue: any
+  ) => {
+    console.log("noah - session.resolvers.ts - contextValue: ", contextValue);
     // Grab args
     const { email, password } = args.input;
 
@@ -76,18 +108,35 @@ export const sessionMutationResolvers: SessionResolvers = {
     return await prisma.session.create({
       data: {
         token,
-        // userId: user.id,
       },
     });
   },
 
   // Logout Mutaiton
-  logout: async (parent: any, args: { input: LogoutInput }) => {
-    // Grab args
-    const { sessionId } = args.input;
-    // Grab args error handling
+  logout: async (parent: any, args: any, contextValue: any) => {
+    // Grab userId from context
+    const { userId, token } = contextValue;
+
+    // Grab userId error handling
+    if (!userId) {
+      throw new Error("Must be authenticated to call this endpoint.");
+    }
+
+    // Grab session from token
+    const session = await prisma.session.findUnique({
+      where: {
+        token,
+      },
+    });
+
+    if (!session) {
+      throw new Error("Session is not valid.");
+    }
+
+    const sessionId = session.id;
+
     if (!sessionId) {
-      throw new Error("Required parameter is missing.");
+      throw new Error("Session ID missing.");
     }
 
     // Delete session

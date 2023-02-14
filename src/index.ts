@@ -3,6 +3,7 @@ import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { readFileSync } from "fs";
 import { resolvers } from "./graph/resolvers";
+import { expressjwt } from "express-jwt";
 
 const typeDefs = readFileSync("./src/graph/schema.graphql", {
   encoding: "utf-8",
@@ -10,12 +11,28 @@ const typeDefs = readFileSync("./src/graph/schema.graphql", {
 
 const startServer = async () => {
   const app = express();
+  app.use(
+    expressjwt({
+      secret: `${process.env.JWT_PRIVATE_KEY}`,
+      algorithms: ["HS256"],
+      credentialsRequired: false,
+    })
+  );
   const httpServer = createServer(app);
-  console.log("resolvers: ", resolvers);
 
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
+    context: ({ req }: any) => {
+      if (req.auth) {
+        return {
+          userId: req.auth.userId,
+          expiry: req.auth.expiry,
+          token: req.headers.authorization.split("Bearer ")[1],
+        };
+      }
+      return {};
+    },
   });
 
   await apolloServer.start();

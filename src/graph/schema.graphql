@@ -56,9 +56,9 @@ input LoginInput {
   password: String!
 }
 
-input LogoutInput {
-  sessionId: String!
-}
+# input LogoutInput {
+#   sessionId: String!
+# }
 
 input BlogInput {
   authorId: ID!
@@ -92,6 +92,7 @@ input UpdateProjectInput {
 type Query {
   user(id: String!): User
   users: [User]
+  session(id: String!): Session
   blog(title: String!): Blog
   blogs: [Blog]
   project(name: String!): Project
@@ -101,7 +102,7 @@ type Query {
 type Mutation {
   createLogin(input: CreateLoginInput!): Login!
   login(input: LoginInput!): Session!
-  logout(input: LogoutInput!): Session!
+  logout: Session!
   createBlog(input: BlogInput!): Blog!
   updateBlog(input: BlogInput!): Blog!
   deleteBlog(title: String!): Blog!
