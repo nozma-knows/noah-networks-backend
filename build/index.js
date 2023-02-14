@@ -15,36 +15,39 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const http_1 = require("http");
 const express_1 = __importDefault(require("express"));
 const apollo_server_express_1 = require("apollo-server-express");
-// 1
+const fs_1 = require("fs");
+const resolvers_1 = require("./graph/resolvers");
+const express_jwt_1 = require("express-jwt");
+const typeDefs = (0, fs_1.readFileSync)("./src/graph/schema.graphql", {
+    encoding: "utf-8",
+});
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
-    // 2
     const app = (0, express_1.default)();
+    app.use((0, express_jwt_1.expressjwt)({
+        secret: `${process.env.JWT_PRIVATE_KEY}`,
+        algorithms: ["HS256"],
+        credentialsRequired: false,
+    }));
     const httpServer = (0, http_1.createServer)(app);
-    // 3
-    const typeDefs = (0, apollo_server_express_1.gql) `
-    type Query {
-      hello: String
-    }
-  `;
-    // 4
-    const resolvers = {
-        Query: {
-            hello: () => "Hello world!",
-        },
-    };
-    // 5
     const apolloServer = new apollo_server_express_1.ApolloServer({
         typeDefs,
-        resolvers,
+        resolvers: resolvers_1.resolvers,
+        context: ({ req }) => {
+            if (req.auth) {
+                return {
+                    userId: req.auth.userId,
+                    expiry: req.auth.expiry,
+                    token: req.headers.authorization.split("Bearer ")[1],
+                };
+            }
+            return {};
+        },
     });
-    // 6
     yield apolloServer.start();
-    // 7
     apolloServer.applyMiddleware({
         app,
         path: "/api",
     });
-    // 8
     httpServer.listen({ port: process.env.PORT || 4000 }, () => console.log(`Server listening on localhost:4000${apolloServer.graphqlPath}`));
 });
 startServer();
