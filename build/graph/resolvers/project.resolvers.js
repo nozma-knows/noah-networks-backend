@@ -15,13 +15,13 @@ const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 exports.projectQueryResolvers = {
     project: (parents, args) => {
-        const { name } = args;
-        if (!name) {
+        const { id } = args;
+        if (!id) {
             throw new Error("Required parameter is missing.");
         }
         const project = prisma.project.findFirst({
             where: {
-                name,
+                id,
             },
         });
         if (!project) {
@@ -57,7 +57,8 @@ exports.projectMutationResolvers = {
     }),
     updateProject: (_parent, args) => __awaiter(void 0, void 0, void 0, function* () {
         // Grab args
-        const { id, authorId, name, website, github, category, title, content } = args.input;
+        const { id } = args;
+        const { authorId, name, website, github, category, title, content } = args.input;
         console.log("args.input: ", { authorId, category, title, content });
         // Grab args error handling
         if (!id || !authorId || !name || !category || !title || !content) {

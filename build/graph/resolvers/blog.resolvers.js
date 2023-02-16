@@ -15,13 +15,13 @@ const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 exports.blogQueryResolvers = {
     blog: (parents, args) => {
-        const { title } = args;
-        if (!title) {
+        const { id } = args;
+        if (!id) {
             throw new Error("Required parameter is missing.");
         }
         const blog = prisma.blog.findFirst({
             where: {
-                title,
+                id,
             },
         });
         if (!blog) {
@@ -61,15 +61,16 @@ exports.blogMutationResolvers = {
         return blog;
     }),
     updateBlog: (_parent, args) => __awaiter(void 0, void 0, void 0, function* () {
+        const { id } = args;
         const { authorId, category, title, subtitle, content } = args.input;
         // Grab args error handling
-        if (!authorId || !category || !title || !content) {
+        if (!id || !authorId || !category || !title || !content) {
             throw new Error("Required parameter is missing.");
         }
         // Create blog
         const updatedBlog = yield prisma.blog.update({
             where: {
-                title,
+                id,
             },
             data: {
                 authorId,
@@ -87,15 +88,15 @@ exports.blogMutationResolvers = {
     }),
     deleteBlog: (_parent, args) => __awaiter(void 0, void 0, void 0, function* () {
         // Grab args
-        const { title } = args;
+        const { id } = args;
         // Grab args error handling
-        if (!title) {
+        if (!id) {
             throw new Error("Required parameter is missing.");
         }
         // Delete blog
         const deletedBlog = yield prisma.blog.delete({
             where: {
-                title,
+                id,
             },
         });
         // Deleted blog error handling

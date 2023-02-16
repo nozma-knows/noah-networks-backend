@@ -52,16 +52,6 @@ export type CreateLoginInput = {
   passwordConfirmation: Scalars["String"];
 };
 
-export type CreateProjectInput = {
-  authorId: Scalars["ID"];
-  category?: InputMaybe<Scalars["String"]>;
-  content?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  github?: InputMaybe<Scalars["String"]>;
-  name: Scalars["String"];
-  title?: InputMaybe<Scalars["String"]>;
-  website?: InputMaybe<Scalars["String"]>;
-};
-
 export type Login = {
   __typename?: "Login";
   email: Scalars["String"];
@@ -96,15 +86,15 @@ export type MutationCreateLoginArgs = {
 };
 
 export type MutationCreateProjectArgs = {
-  input: CreateProjectInput;
+  input: ProjectInput;
 };
 
 export type MutationDeleteBlogArgs = {
-  title: Scalars["String"];
+  id: Scalars["String"];
 };
 
 export type MutationDeleteProjectArgs = {
-  id: Scalars["ID"];
+  id: Scalars["String"];
 };
 
 export type MutationLoginArgs = {
@@ -112,11 +102,13 @@ export type MutationLoginArgs = {
 };
 
 export type MutationUpdateBlogArgs = {
+  id: Scalars["String"];
   input: BlogInput;
 };
 
 export type MutationUpdateProjectArgs = {
-  input: UpdateProjectInput;
+  id: Scalars["String"];
+  input: ProjectInput;
 };
 
 export type Project = {
@@ -134,6 +126,16 @@ export type Project = {
   website?: Maybe<Scalars["String"]>;
 };
 
+export type ProjectInput = {
+  authorId: Scalars["ID"];
+  category?: InputMaybe<Scalars["String"]>;
+  content?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  github?: InputMaybe<Scalars["String"]>;
+  name: Scalars["String"];
+  title?: InputMaybe<Scalars["String"]>;
+  website?: InputMaybe<Scalars["String"]>;
+};
+
 export type Query = {
   __typename?: "Query";
   blog?: Maybe<Blog>;
@@ -146,11 +148,11 @@ export type Query = {
 };
 
 export type QueryBlogArgs = {
-  title: Scalars["String"];
+  id: Scalars["String"];
 };
 
 export type QueryProjectArgs = {
-  name: Scalars["String"];
+  id: Scalars["String"];
 };
 
 export type QuerySessionArgs = {
@@ -165,17 +167,6 @@ export type Session = {
   __typename?: "Session";
   id: Scalars["ID"];
   token: Scalars["String"];
-};
-
-export type UpdateProjectInput = {
-  authorId: Scalars["ID"];
-  category?: InputMaybe<Scalars["String"]>;
-  content?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  github?: InputMaybe<Scalars["String"]>;
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  title?: InputMaybe<Scalars["String"]>;
-  website?: InputMaybe<Scalars["String"]>;
 };
 
 export type User = {
@@ -301,16 +292,15 @@ export type ResolversTypes = ResolversObject<{
   BlogInput: BlogInput;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
   CreateLoginInput: CreateLoginInput;
-  CreateProjectInput: CreateProjectInput;
   ID: ResolverTypeWrapper<Scalars["ID"]>;
   Login: ResolverTypeWrapper<Login>;
   LoginInput: LoginInput;
   Mutation: ResolverTypeWrapper<{}>;
   Project: ResolverTypeWrapper<Project>;
+  ProjectInput: ProjectInput;
   Query: ResolverTypeWrapper<{}>;
   Session: ResolverTypeWrapper<Session>;
   String: ResolverTypeWrapper<Scalars["String"]>;
-  UpdateProjectInput: UpdateProjectInput;
   User: ResolverTypeWrapper<User>;
 }>;
 
@@ -320,16 +310,15 @@ export type ResolversParentTypes = ResolversObject<{
   BlogInput: BlogInput;
   Boolean: Scalars["Boolean"];
   CreateLoginInput: CreateLoginInput;
-  CreateProjectInput: CreateProjectInput;
   ID: Scalars["ID"];
   Login: Login;
   LoginInput: LoginInput;
   Mutation: {};
   Project: Project;
+  ProjectInput: ProjectInput;
   Query: {};
   Session: Session;
   String: Scalars["String"];
-  UpdateProjectInput: UpdateProjectInput;
   User: User;
 }>;
 
@@ -389,7 +378,7 @@ export type MutationResolvers<
     ResolversTypes["Blog"],
     ParentType,
     ContextType,
-    RequireFields<MutationDeleteBlogArgs, "title">
+    RequireFields<MutationDeleteBlogArgs, "id">
   >;
   deleteProject?: Resolver<
     ResolversTypes["Project"],
@@ -408,13 +397,13 @@ export type MutationResolvers<
     ResolversTypes["Blog"],
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateBlogArgs, "input">
+    RequireFields<MutationUpdateBlogArgs, "id" | "input">
   >;
   updateProject?: Resolver<
     ResolversTypes["Project"],
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateProjectArgs, "input">
+    RequireFields<MutationUpdateProjectArgs, "id" | "input">
   >;
 }>;
 
@@ -448,7 +437,7 @@ export type QueryResolvers<
     Maybe<ResolversTypes["Blog"]>,
     ParentType,
     ContextType,
-    RequireFields<QueryBlogArgs, "title">
+    RequireFields<QueryBlogArgs, "id">
   >;
   blogs?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["Blog"]>>>,
@@ -459,7 +448,7 @@ export type QueryResolvers<
     Maybe<ResolversTypes["Project"]>,
     ParentType,
     ContextType,
-    RequireFields<QueryProjectArgs, "name">
+    RequireFields<QueryProjectArgs, "id">
   >;
   projects?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["Project"]>>>,

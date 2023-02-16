@@ -46,7 +46,7 @@ model Blog {
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
   category  String
-  title     String   @unique
+  title     String
   subtitle  String?
   content   String[]
 }
@@ -59,7 +59,7 @@ model Project {
   author    User     @relation(fields: [authorId], references: [id])
   website   String?
   github    String?
-  name      String   @unique
+  name      String
   category  String
   title     String
   content   String[]

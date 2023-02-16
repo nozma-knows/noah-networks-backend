@@ -7,16 +7,16 @@ const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 
 export const blogQueryResolvers: BlogResolvers = {
-  blog: (parents: any, args: { title: String }) => {
-    const { title } = args;
+  blog: (parents: any, args: { id: String }) => {
+    const { id } = args;
 
-    if (!title) {
+    if (!id) {
       throw new Error("Required parameter is missing.");
     }
 
     const blog = prisma.blog.findFirst({
       where: {
-        title,
+        id,
       },
     });
 
@@ -62,18 +62,19 @@ export const blogMutationResolvers: BlogResolvers = {
 
     return blog;
   },
-  updateBlog: async (_parent: any, args: { input: BlogInput }) => {
+  updateBlog: async (_parent: any, args: { id: String; input: BlogInput }) => {
+    const { id } = args;
     const { authorId, category, title, subtitle, content } = args.input;
 
     // Grab args error handling
-    if (!authorId || !category || !title || !content) {
+    if (!id || !authorId || !category || !title || !content) {
       throw new Error("Required parameter is missing.");
     }
 
     // Create blog
     const updatedBlog = await prisma.blog.update({
       where: {
-        title,
+        id,
       },
       data: {
         authorId,
@@ -91,19 +92,19 @@ export const blogMutationResolvers: BlogResolvers = {
 
     return updatedBlog;
   },
-  deleteBlog: async (_parent: any, args: { title: String }) => {
+  deleteBlog: async (_parent: any, args: { id: String }) => {
     // Grab args
-    const { title } = args;
+    const { id } = args;
 
     // Grab args error handling
-    if (!title) {
+    if (!id) {
       throw new Error("Required parameter is missing.");
     }
 
     // Delete blog
     const deletedBlog = await prisma.blog.delete({
       where: {
-        title,
+        id,
       },
     });
 

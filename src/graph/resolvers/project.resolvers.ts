@@ -1,23 +1,22 @@
 import {
   ProjectResolvers,
-  CreateProjectInput,
-  UpdateProjectInput,
+  ProjectInput,
 } from "./../../__generated__/resolvers-types";
 const { prisma } = require("../../prisma/client");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 
 export const projectQueryResolvers: ProjectResolvers = {
-  project: (parents: any, args: { name: String }) => {
-    const { name } = args;
+  project: (parents: any, args: { id: String }) => {
+    const { id } = args;
 
-    if (!name) {
+    if (!id) {
       throw new Error("Required parameter is missing.");
     }
 
     const project = prisma.project.findFirst({
       where: {
-        name,
+        id,
       },
     });
 
@@ -34,7 +33,7 @@ export const projectQueryResolvers: ProjectResolvers = {
 
 export const projectMutationResolvers: ProjectResolvers = {
   // Create Project Mutation Resolver
-  createProject: async (_parent: any, args: { input: CreateProjectInput }) => {
+  createProject: async (_parent: any, args: { input: ProjectInput }) => {
     // Grab args
     const { authorId, name, website, github, category, title, content } =
       args.input;
@@ -65,9 +64,13 @@ export const projectMutationResolvers: ProjectResolvers = {
 
     return project;
   },
-  updateProject: async (_parent: any, args: { input: UpdateProjectInput }) => {
+  updateProject: async (
+    _parent: any,
+    args: { id: String; input: ProjectInput }
+  ) => {
     // Grab args
-    const { id, authorId, name, website, github, category, title, content } =
+    const { id } = args;
+    const { authorId, name, website, github, category, title, content } =
       args.input;
     console.log("args.input: ", { authorId, category, title, content });
 

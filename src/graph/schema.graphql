@@ -68,18 +68,7 @@ input BlogInput {
   content: [String]!
 }
 
-input CreateProjectInput {
-  authorId: ID!
-  name: String!
-  website: String
-  github: String
-  category: String
-  title: String
-  content: [String]
-}
-
-input UpdateProjectInput {
-  id: ID!
+input ProjectInput {
   authorId: ID!
   name: String!
   website: String
@@ -93,9 +82,9 @@ type Query {
   user(id: String!): User
   users: [User]
   session(id: String!): Session
-  blog(title: String!): Blog
+  blog(id: String!): Blog
   blogs: [Blog]
-  project(name: String!): Project
+  project(id: String!): Project
   projects: [Project]
 }
 
@@ -104,9 +93,9 @@ type Mutation {
   login(input: LoginInput!): Session!
   logout: Session!
   createBlog(input: BlogInput!): Blog!
-  updateBlog(input: BlogInput!): Blog!
-  deleteBlog(title: String!): Blog!
-  createProject(input: CreateProjectInput!): Project!
-  updateProject(input: UpdateProjectInput!): Project!
-  deleteProject(id: ID!): Project!
+  updateBlog(id: String!, input: BlogInput!): Blog!
+  deleteBlog(id: String!): Blog!
+  createProject(input: ProjectInput!): Project!
+  updateProject(id: String!, input: ProjectInput!): Project!
+  deleteProject(id: String!): Project!
 }
