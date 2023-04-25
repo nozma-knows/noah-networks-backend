@@ -24,6 +24,7 @@ type Blog {
   authorId: String!
   author: User!
   category: String
+  coverPhoto: String
   title: String
   subtitle: String
   content: [String]
@@ -63,6 +64,7 @@ input LoginInput {
 input BlogInput {
   authorId: ID!
   category: String!
+  coverPhoto: String!
   title: String!
   subtitle: String!
   content: [String]!
