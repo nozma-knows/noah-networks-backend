@@ -37,10 +37,14 @@ exports.blogMutationResolvers = {
     // Create Blog Mutation Resolver
     createBlog: (_parent, args) => __awaiter(void 0, void 0, void 0, function* () {
         // Grab args
-        const { authorId, category, title, subtitle, content } = args.input;
-        console.log("args.input: ", { authorId, category, title, content });
+        const { authorId, category, coverPhoto, title, subtitle, content } = args.input;
         // Grab args error handling
-        if (!authorId || !category || !title || !subtitle || !content) {
+        if (!authorId ||
+            !category ||
+            !coverPhoto ||
+            !title ||
+            !subtitle ||
+            !content) {
             throw new Error("Required parameter is missing.");
         }
         // Create blog
@@ -49,6 +53,7 @@ exports.blogMutationResolvers = {
                 id: crypto.randomUUID(),
                 authorId,
                 category,
+                coverPhoto,
                 title,
                 subtitle,
                 content,
@@ -62,7 +67,7 @@ exports.blogMutationResolvers = {
     }),
     updateBlog: (_parent, args) => __awaiter(void 0, void 0, void 0, function* () {
         const { id } = args;
-        const { authorId, category, title, subtitle, content } = args.input;
+        const { authorId, category, coverPhoto, title, subtitle, content } = args.input;
         // Grab args error handling
         if (!id || !authorId || !category || !title || !content) {
             throw new Error("Required parameter is missing.");
@@ -75,6 +80,7 @@ exports.blogMutationResolvers = {
             data: {
                 authorId,
                 category,
+                coverPhoto,
                 title,
                 subtitle,
                 content,
