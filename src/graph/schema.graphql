@@ -23,11 +23,11 @@ type Blog {
   updatedAt: String!
   authorId: String!
   author: User!
-  category: String
-  coverPhoto: String
-  title: String
-  subtitle: String
-  content: [String]
+  category: String!
+  coverPhoto: String!
+  title: String!
+  subtitle: String!
+  content: [String!]!
 }
 
 type Project {
@@ -40,7 +40,8 @@ type Project {
   website: String
   github: String
   category: String
-  title: String
+  title: String!
+  logo: String!
   content: [String]
 }
 
@@ -77,6 +78,7 @@ input ProjectInput {
   github: String
   category: String
   title: String
+  logo: String
   content: [String]
 }
 

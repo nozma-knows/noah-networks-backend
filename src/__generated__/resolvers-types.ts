@@ -19,13 +19,13 @@ export type Blog = {
   __typename?: 'Blog';
   author: User;
   authorId: Scalars['String'];
-  category?: Maybe<Scalars['String']>;
-  content?: Maybe<Array<Maybe<Scalars['String']>>>;
-  coverPhoto?: Maybe<Scalars['String']>;
+  category: Scalars['String'];
+  content: Array<Scalars['String']>;
+  coverPhoto: Scalars['String'];
   createdAt: Scalars['String'];
   id: Scalars['ID'];
-  subtitle?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
+  subtitle: Scalars['String'];
+  title: Scalars['String'];
   updatedAt: Scalars['String'];
 };
 
@@ -122,8 +122,9 @@ export type Project = {
   createdAt: Scalars['String'];
   github?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  logo: Scalars['String'];
   name: Scalars['String'];
-  title?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
   updatedAt: Scalars['String'];
   website?: Maybe<Scalars['String']>;
 };
@@ -133,6 +134,7 @@ export type ProjectInput = {
   category?: InputMaybe<Scalars['String']>;
   content?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   github?: InputMaybe<Scalars['String']>;
+  logo?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   title?: InputMaybe<Scalars['String']>;
   website?: InputMaybe<Scalars['String']>;
@@ -252,6 +254,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
+
+
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Blog: ResolverTypeWrapper<Blog>;
@@ -291,13 +295,13 @@ export type ResolversParentTypes = ResolversObject<{
 export type BlogResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Blog'] = ResolversParentTypes['Blog']> = ResolversObject<{
   author?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   authorId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  category?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  content?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
-  coverPhoto?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  category?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  content?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  coverPhoto?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  subtitle?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  subtitle?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -329,8 +333,9 @@ export type ProjectResolvers<ContextType = Context, ParentType extends Resolvers
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   github?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  logo?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

@@ -3,7 +3,6 @@ import {
   ProjectInput,
 } from "./../../__generated__/resolvers-types";
 const { prisma } = require("../../prisma/client");
-const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 
 export const projectQueryResolvers: ProjectResolvers = {
@@ -35,7 +34,7 @@ export const projectMutationResolvers: ProjectResolvers = {
   // Create Project Mutation Resolver
   createProject: async (_parent: any, args: { input: ProjectInput }) => {
     // Grab args
-    const { authorId, name, website, github, category, title, content } =
+    const { authorId, name, website, github, category, title, logo, content } =
       args.input;
 
     // Grab args error handling
@@ -53,6 +52,7 @@ export const projectMutationResolvers: ProjectResolvers = {
         ...(github ? { github } : {}),
         category,
         title,
+        ...(logo ? { logo } : {}),
         content,
       },
     });
@@ -70,7 +70,7 @@ export const projectMutationResolvers: ProjectResolvers = {
   ) => {
     // Grab args
     const { id } = args;
-    const { authorId, name, website, github, category, title, content } =
+    const { authorId, name, website, github, category, title, logo, content } =
       args.input;
     console.log("args.input: ", { authorId, category, title, content });
 
@@ -91,6 +91,7 @@ export const projectMutationResolvers: ProjectResolvers = {
         github,
         category,
         title,
+        logo,
         content,
       },
     });
